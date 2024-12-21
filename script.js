@@ -5,6 +5,11 @@ const logo = document.getElementById('logo')
 const score = document.getElementById('score')
 const highScoretext = document.getElementById('highScore')
 
+// sounds
+const foodEaten = new Audio('sounds/FoodEaten.mp3')
+const gameOverSound = new Audio('sounds/gameOver.mp3')
+const startSound = new Audio('sounds/gameStart.mp3')
+
 let snake = [{ x: 10, y: 10 }]
 let food = generateFood()
 let direction = 'right'
@@ -13,6 +18,11 @@ let gameSpeedDelay = 200
 let gameStarted = false
 let highScore = 0
 let keyPressAllowed = true
+
+function playSound(sound) {
+  sound.currentTime = 0
+  sound.play()
+}
 
 function draw() {
   board.innerHTML = ''
@@ -76,12 +86,14 @@ function move() {
   }
 
   if (head.x < 1 || head.x > gridSize || head.y < 1 || head.y > gridSize) {
+    playSound(gameOverSound)
     resetGame()
     return
   }
 
   for (let i = 1; i < snake.length; i++) {
     if (head.x === snake[i].x && head.y === snake[i].y) {
+      playSound(gameOverSound)
       resetGame()
       return
     }
@@ -90,6 +102,7 @@ function move() {
   snake.unshift(head)
 
   if (head.x === food.x && head.y === food.y) {
+    playSound(foodEaten)
     food = generateFood()
     increaseSpeed()
     clearInterval(gameInterval)
@@ -114,6 +127,7 @@ function startGame() {
     foodElement.classList.add('visible')
   }
 
+  playSound(startSound) //start game sound
   updateScore()
   gameInterval = setInterval(() => {
     move()
