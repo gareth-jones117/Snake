@@ -78,6 +78,24 @@ body,
 .food {
   background-color: #dedede;
   border: #999 5px solid;
+  animation: pulse 0.5s infinite;
+}
+
+#food {
+  visibility: hidden;
+}
+#food.visible {
+  visibility: visible;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
 }
 
 #logo {
